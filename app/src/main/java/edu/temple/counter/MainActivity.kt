@@ -4,18 +4,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import edu.temple.counter.ui.theme.CounterTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,12 +42,39 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Counter(modifier: Modifier = Modifier) {
-    Column (modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally) {
+
+    var counterVal by rememberSaveable { mutableIntStateOf(0) }
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Button(onClick = {
+            counterVal++
+        }) {
+            Image(
+                painter = painterResource(android.R.drawable.arrow_up_float),
+                contentDescription = "Up Arrow"
+            )
+        }
+
         Text(
-            text = "0",
-            fontSize = 192.sp
+            text = counterVal.toString(),
+            style = MaterialTheme.typography.displayLarge
         )
+
+        Button(onClick = {
+            if (counterVal > 0) {
+                counterVal--
+            }
+        }) {
+            Image(
+                painter = painterResource(android.R.drawable.arrow_down_float),
+                contentDescription = "Down Arrow"
+            )
+        }
     }
 }
 
